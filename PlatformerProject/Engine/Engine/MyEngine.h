@@ -39,9 +39,9 @@ namespace MyEngine {
 		void UpdatePhysics();
 		void Render();
 
-		float GetFPS() const { return 1.0 / time_elapsed.count(); }
-		float GetTimeElapsedMs() const { return 1000 * time_elapsed.count(); }
-		float GetTimeComputationMs() const { return 1000 * time_computation.count(); }
+		float GetFPS() const { return static_cast<float>(1.0 / time_elapsed.count()); }
+		float GetTimeElapsedMs() const { return static_cast<float>(1000 * time_elapsed.count()); }
+		float GetTimeComputationMs() const { return static_cast<float>(1000 * time_computation.count()); }
 
 		glm::vec2 GetScreenSize() const;
 

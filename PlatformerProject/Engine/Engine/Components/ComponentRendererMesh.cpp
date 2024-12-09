@@ -65,6 +65,7 @@ TextureMetadata ComponentRendererMesh::LoadMetadata(const std::string& texturePa
         glm::vec4(metadata.maxUV.x, metadata.maxUV.y, 0, 0),
         glm::vec4(metadata.maxUV.x, metadata.minUV.y, 0, 0)
         };
+
 }
 
 void ComponentRendererMesh::Update(float deltaTime) {
