@@ -37,7 +37,7 @@ void ComponentPhysicsBody::CreateBody(b2BodyType bodyType, bool isSensor, glm::v
 	float physicsScale = engine->GetPhysicsScale();
 
 	// world
-	//_world = engine->GetB2World();
+	_world = engine->GetB2World();
 
 	// Adjust the physics body's size to match the sprite's scale
 	glm::vec2 adjustedSize = size * glm::vec2(0.5f);

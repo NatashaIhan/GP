@@ -58,7 +58,7 @@ TextureMetadata ComponentRendererMesh::LoadMetadata(const std::string& texturePa
     _texture = sre::Texture::create().withFile(texturePath).build();
 
     //Use metadata for UV calculation
-        auto& metadata = textureMetadataMap[texturePath];
+        metadata = textureMetadataMap[texturePath];
         const std::vector<glm::vec4> uvs = {
         glm::vec4(metadata.minUV.x, metadata.minUV.y, 0, 0),
         glm::vec4(metadata.minUV.x, metadata.maxUV.y, 0, 0),
