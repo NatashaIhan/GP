@@ -8,6 +8,7 @@
 #include "Game/ComponentPlatform.h"
 #include "Game/ComponentPlatformMove.h"
 #include "Game/ComponentSpline.h"
+#include "Game/ComponentPlatformBounce.h"
 
 MyEngine::Engine engine;
 
@@ -17,6 +18,7 @@ int main() {
 	MyEngine::ComponentFactory::RegisterComponentOfType("PLATFORM_BUILDER", []() { return std::make_shared<ComponentPlatform>(); });
 	MyEngine::ComponentFactory::RegisterComponentOfType("PLATFORM_MOVER", []() { return std::make_shared<ComponentPlatformMove>(); });
 	MyEngine::ComponentFactory::RegisterComponentOfType("SPLINE", []() { return std::make_shared<ComponentSpline>(); });
+	MyEngine::ComponentFactory::RegisterComponentOfType("PLATFORM_BOUNCER", []() { return std::make_shared<ComponentPlatformBounce>(); });
 	
 	engine.Init("data/scene.json");
 }

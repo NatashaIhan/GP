@@ -23,10 +23,6 @@ void ComponentRendererSprite::SetSprite(std::string idAtlas, std::string idSprit
 	}
 	_atlas = MyEngine::ResourceManager::GetAtlas(idAtlas);
 	_sprite = _atlas->get(idSprite);
-
-	// Set the same scale used by the physics body
-	glm::vec2 scale = glm::vec2(0.5f);
-	_sprite.setScale(scale);
 }
 
 void ComponentRendererSprite::Render(sre::RenderPass& renderPass) {

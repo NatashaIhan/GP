@@ -3,7 +3,9 @@
 #include "glm/glm.hpp"
 #include "SDL.h"
 
+#include "Engine/MyEngine.h"
 #include "Engine/Components/ComponentPhysicsBody.h"
+#include "ComponentPlatformBounce.h"
 
 void ComponentController::Init(rapidjson::Value& serializedData) {
 	auto gameObject = GetGameObject().lock();
@@ -44,11 +46,31 @@ void ComponentController::KeyEvent(SDL_Event& event) {
 }
 
 void ComponentController::OnCollisionStart(ComponentPhysicsBody* other, b2Manifold* manifold) {
-	if (manifold->localNormal.y > .99)
+	if (other == nullptr) {
+		return;
+	}
+	auto engine = MyEngine::Engine::GetInstance();
+	auto collidedBody = other->GetGameObject().lock();
+	auto collidedGameObject = collidedBody.get();
+	auto bouncyGround = collidedBody->FindComponent<ComponentPlatformBounce>().lock();
+	if (bouncyGround) {
+		if (!collidedBody) {
+			return;
+		}
+		engine->RegisterForDestruction(collidedGameObject);
+		_jump = true;
+	}
+	
+	else if (manifold->localNormal.y > .99)
 		_grounded = true;
 }
 
 void ComponentController::OnCollisionEnd(ComponentPhysicsBody* other, b2Manifold* manifold) {
+	if (other == nullptr || manifold == nullptr) {
+		return;
+	}
 	if (manifold->localNormal.y > .99)
 		_grounded = false;
+
+	
 }

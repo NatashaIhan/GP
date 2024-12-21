@@ -39,10 +39,7 @@ void ComponentPhysicsBody::CreateBody(b2BodyType bodyType, bool isSensor, glm::v
 	// world
 	_world = engine->GetB2World();
 
-	// Adjust the physics body's size to match the sprite's scale
-	glm::vec2 adjustedSize = size * glm::vec2(0.5f);
-
-	// Create Box2D shape
+	// shape
 	{
 		_shape = new b2PolygonShape();
 		_shape->SetAsBox(size.x / physicsScale, size.y / physicsScale);

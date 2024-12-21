@@ -57,6 +57,23 @@ namespace MyEngine {
 			return std::weak_ptr<T>();
 		}
 
+		//template <class T>
+		//bool DeleteComponent() {
+		//	static_assert(std::is_base_of<Component, T>::value, "Template parameter type is not subclass of MyEngine::Component");
+
+		//	// Find and remove the component
+		//	auto it = std::find_if(_components.begin(), _components.end(),
+		//		[](const std::shared_ptr<Component>& component) {
+		//			return std::dynamic_pointer_cast<T>(component) != nullptr;
+		//		});
+
+		//	if (it != _components.end()) {
+		//		_components.erase(it);  // Remove the component from the list
+		//		return true;            // Indicate success
+		//	}
+		//	return false;               // Indicate failure
+		//}
+
 		// private fields
 	private:
 		std::weak_ptr<GameObject> _parent;

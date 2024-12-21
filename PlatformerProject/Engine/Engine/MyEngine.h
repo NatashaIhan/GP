@@ -30,6 +30,7 @@ namespace MyEngine {
 		const int   PHYSICS_ITERATION_POSITION = 2;
 		const int   PHYSICS_ITERATION_VELOCITY = 6;
 		const float PHYSICS_SCALE = 100;
+		std::vector<GameObject*> destructionQueue = {};
 
 		Engine();
 
@@ -39,9 +40,9 @@ namespace MyEngine {
 		void UpdatePhysics();
 		void Render();
 
-		float GetFPS() const { return static_cast<float>(1.0 / time_elapsed.count()); }
-		float GetTimeElapsedMs() const { return static_cast<float>(1000 * time_elapsed.count()); }
-		float GetTimeComputationMs() const { return static_cast<float>(1000 * time_computation.count()); }
+		float GetFPS() const { return 1.0 / time_elapsed.count(); }
+		float GetTimeElapsedMs() const { return 1000 * time_elapsed.count(); }
+		float GetTimeComputationMs() const { return 1000 * time_computation.count(); }
 
 		glm::vec2 GetScreenSize() const;
 
@@ -53,11 +54,13 @@ namespace MyEngine {
 
 		void RegisterPhysicsComponent(ComponentPhysicsBody* body);
 		void DeregisterPhysicsComponent(ComponentPhysicsBody* body);
+		void RegisterForDestruction(GameObject* gameObject);
 
 		std::weak_ptr<GameObject> CreateGameObject(std::string name);
 		std::weak_ptr<GameObject> CreateGameObject(std::string name, std::weak_ptr<GameObject> parent);
 		std::weak_ptr<GameObject> GetGameObject(std::string name) { return _gameObjects[name]; }
 		void DestroyGameObject(GameObject* gameObject);
+		void DestroyQueuedBodies();
 
 	private:
 		// scene graph

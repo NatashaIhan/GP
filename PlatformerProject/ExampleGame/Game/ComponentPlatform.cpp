@@ -7,25 +7,27 @@ void ComponentPlatform::Init(rapidjson::Value& serializedData) {
 	_size = serializedData["size"].GetFloat();
 	_type = static_cast<PlatformType>(serializedData["type"].GetInt());
 
-	float halfSize = _size / 10;
-	float halfSizeBody = _tileSize / 10; //What is this? //tileSize is a float constant from header file
-
-	// Apply scaling if scale property exists
-	if (serializedData.HasMember("transform") && serializedData["transform"].HasMember("scale")) {
-		auto scaleData = serializedData["transform"]["scale"].GetArray();
-		glm::vec3 scale(scaleData[0].GetFloat(), scaleData[1].GetFloat(), scaleData[2].GetFloat());
-		GetGameObject().lock()->SetScale(scale);
-	}
+	float halfSize = _size / 2;
+	float halfSizeBody = _tileSize / 2; //What is this? //tileSize is a float constant from header file
 
 	glm::vec2 offset = glm::vec2(0, 0);
 	if (_type == PlatformType::Platform)
 		offset.x = 1;
 	if (_type == PlatformType::Wall)
 		offset.y = 1;
-	
-	// body
-	glm::vec2 sizeBody = glm::vec2(_tileSize, _tileSize) + offset * _tileSize * (_size - 1);
-	sizeBody /= 10;
+
+	// Get the GameObject and its scale
+	auto gameObject = GetGameObject().lock();
+	if (!gameObject) return;
+
+	glm::vec3 objectScale = gameObject->GetScale();
+
+	// Apply scale to physics body size
+	glm::vec2 sizeBody = glm::vec2(380, 220);
+	sizeBody *= glm::vec2(objectScale.x, objectScale.y); // Apply GameObject's scale
+	sizeBody /= 2; // Box2D expects half-sizes
+
+
 	auto body = GetGameObject().lock()->CreateComponent<ComponentPhysicsBody>().lock();
 	body->CreateBody(b2_kinematicBody, false, sizeBody);
 

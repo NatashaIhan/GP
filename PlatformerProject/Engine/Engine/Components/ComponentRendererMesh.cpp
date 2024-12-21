@@ -1,71 +1,20 @@
 #include "ComponentRendererMesh.h"
-#include <fstream>
-#include <sstream>
-#include <rapidjson/document.h>
-#include <sre/Texture.hpp>
-#include <stdexcept>
+
 #include "glm/gtx/transform.hpp"
 
-TextureMetadata ComponentRendererMesh::LoadMetadata(const std::string& texturePath) {
-    //derive metadata file path
-    std::string metadataPath = texturePath + ".meta.json";
+void ComponentRendererMesh::Init(rapidjson::Value& serializedData) {
+	_mesh = sre::Mesh::create()
+        .withPositions(positions)
+        .withUVs(uvs)
+        .withIndices(idxs, sre::MeshTopology::Triangles, 0)
+        .build();
+    _material = sre::Shader::getUnlit()->createMaterial();
 
-    //load and parse the metadata JSON
-    std::ifstream metadataFile(metadataPath);
-    if (!metadataFile.is_open()) {
-        throw std::runtime_error("Failed to open metadata file: " + metadataPath);
-    }
-
-    std::stringstream buffer;
-    buffer << metadataFile.rdbuf();
-    rapidjson::Document doc;
-    doc.Parse(buffer.str().c_str());
-
-    if (doc.HasParseError()) {
-        throw std::runtime_error("Failed to parse metadata file: " + metadataPath);
-    }
-
-    //extract metadata
-    TextureMetadata metadata;
-    metadata.textureSize = glm::vec2(
-        doc["textureSize"]["x"].GetFloat(),
-        doc["textureSize"]["y"].GetFloat());
-    metadata.tileSize = glm::vec2(
-        doc["tileSize"]["x"].GetFloat(),
-        doc["tileSize"]["y"].GetFloat());
-    metadata.tileSizeWithBorder = glm::vec2(
-        doc["tileSizeWithBorder"]["x"].GetFloat(),
-        doc["tileSizeWithBorder"]["y"].GetFloat());
-    metadata.minUV = glm::vec2(
-        doc["minUV"]["x"].GetFloat(),
-        doc["minUV"]["y"].GetFloat());
-    metadata.maxUV = glm::vec2(
-        doc["maxUV"]["x"].GetFloat(),
-        doc["maxUV"]["y"].GetFloat());
-
-    return metadata;
-}
-
-    void ComponentRendererMesh::Init(rapidjson::Value & serializedData) {
-    // Get the texture path from JSON
-    std::string texturePath = serializedData["texture"].GetString();
-
-    //Load metadata
-    auto metadata = LoadMetadata(texturePath);
-    textureMetadataMap[texturePath] = metadata;
-
-    //Create the texture
-    _texture = sre::Texture::create().withFile(texturePath).build();
-
-    //Use metadata for UV calculation
-        metadata = textureMetadataMap[texturePath];
-        const std::vector<glm::vec4> uvs = {
-        glm::vec4(metadata.minUV.x, metadata.minUV.y, 0, 0),
-        glm::vec4(metadata.minUV.x, metadata.maxUV.y, 0, 0),
-        glm::vec4(metadata.maxUV.x, metadata.maxUV.y, 0, 0),
-        glm::vec4(metadata.maxUV.x, metadata.minUV.y, 0, 0)
-        };
-
+    _texture = sre::Texture::create().withFile("data/level0.png")
+        .withGenerateMipmaps(false)
+        .withFilterSampling(false)
+        .build();
+    _material->setTexture(_texture);
 }
 
 void ComponentRendererMesh::Update(float deltaTime) {

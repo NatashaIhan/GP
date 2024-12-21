@@ -46,6 +46,7 @@ namespace MyEngine {
 		// initialize b2
 		_b2World = new b2World(b2Vec2(0, -9.8));
 		_b2World->SetContactListener(this);
+		std::vector<GameObject*> destructionQueue = {};
 
 		// load scene file
 		std::ifstream fis(sceneFile);
@@ -87,6 +88,8 @@ namespace MyEngine {
 
 		if (auto root = _root.lock())
 			root->Update(deltaTime);
+
+		DestroyQueuedBodies();
 	}
 
 	void Engine::UpdatePhysics() {
@@ -115,8 +118,10 @@ namespace MyEngine {
 				gameObject->SetPosition(glm::vec3(position.x * PHYSICS_SCALE, position.y * PHYSICS_SCALE, 0));
 				gameObject->SetEulerAngles(glm::vec3(0, 0, angle));
 			}
-
 		}
+
+		//DestroyQueuedBodies();
+
 	}
 
 	void Engine::Render()
@@ -148,7 +153,8 @@ namespace MyEngine {
 		_physicsLookup[body->_fixture] = body;
 	}
 
-	void Engine::DeregisterPhysicsComponent(ComponentPhysicsBody*  body) {
+	void Engine::DeregisterPhysicsComponent(ComponentPhysicsBody* body) {
+		_b2World->DestroyBody(body->_body);
 		auto iter = _physicsLookup.find(body->_fixture);
 		if (iter != _physicsLookup.end())
 			_physicsLookup.erase(iter);
@@ -190,7 +196,6 @@ namespace MyEngine {
 	void Engine::DestroyGameObject(GameObject* gameObject) {
 		if (gameObject == nullptr)
 			return;
-
 		if (auto parent = gameObject->_parent.lock())
 		{
 			parent->_children.remove_if([gameObject](std::weak_ptr<GameObject> child) { return child.lock().get() == gameObject; });
@@ -231,7 +236,24 @@ namespace MyEngine {
 			{
 				gameObjA->OnCollisionEnd(physB->second, manifold);
 				gameObjB->OnCollisionEnd(physA->second, manifold);
+				//destructionQueue.push_back(gameObjB.get());
 			}
 		}
+	}
+
+	void Engine::RegisterForDestruction(GameObject* gameObject) {
+		destructionQueue.push_back(gameObject);
+	}
+
+	void Engine::DestroyQueuedBodies() {
+		for (auto* body : destructionQueue) {
+			if (body == nullptr) {
+				continue;
+			}
+			auto cpb = body->FindComponent<ComponentPhysicsBody>().lock().get();
+			DeregisterPhysicsComponent(cpb);
+			DestroyGameObject(body);
+		}
+		destructionQueue.clear();
 	}
 }
