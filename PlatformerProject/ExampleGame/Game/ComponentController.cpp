@@ -5,7 +5,8 @@
 
 #include "Engine/MyEngine.h"
 #include "Engine/Components/ComponentPhysicsBody.h"
-#include "ComponentPlatformBounce.h"
+#include "ComponentPlatform.h"
+
 
 void ComponentController::Init(rapidjson::Value& serializedData) {
 	auto gameObject = GetGameObject().lock();
@@ -46,22 +47,29 @@ void ComponentController::KeyEvent(SDL_Event& event) {
 }
 
 void ComponentController::OnCollisionStart(ComponentPhysicsBody* other, b2Manifold* manifold) {
+	printf ("et eller andet tilfældigt\n");
 	if (other == nullptr) {
 		return;
 	}
 	auto engine = MyEngine::Engine::GetInstance();
 	auto collidedBody = other->GetGameObject().lock();
 	auto collidedGameObject = collidedBody.get();
-	auto bouncyGround = collidedBody->FindComponent<ComponentPlatformBounce>().lock();
+	auto bouncyGround = collidedBody->FindComponent<ComponentPlatform>().lock();
 	if (bouncyGround) {
 		if (!collidedBody) {
 			return;
 		}
-		engine->RegisterForDestruction(collidedGameObject);
-		_jump = true;
+		if (bouncyGround->_bouncy) {
+			engine->RegisterForDestruction(collidedGameObject);
+			_jump = true;
+			return;
+		}
+
 	}
 	
-	else if (manifold->localNormal.y > .99)
+	bool bunnyAbove = collidedBody->GetPosition().y < GetGameObject().lock()->GetPosition().y;
+	float impactDirection = abs(manifold->localNormal.y) * (bunnyAbove*2-1);
+	if (impactDirection > .99)
 		_grounded = true;
 }
 
@@ -69,7 +77,14 @@ void ComponentController::OnCollisionEnd(ComponentPhysicsBody* other, b2Manifold
 	if (other == nullptr || manifold == nullptr) {
 		return;
 	}
-	if (manifold->localNormal.y > .99)
+	auto collidedBody = other->GetGameObject().lock();
+	if (!collidedBody) {
+		return;
+	}
+
+	bool bunnyAbove = collidedBody->GetPosition().y < GetGameObject().lock()->GetPosition().y;
+	float impactDirection = abs(manifold->localNormal.y) * (bunnyAbove * 2 - 1);
+	if (impactDirection > .99)
 		_grounded = false;
 
 	

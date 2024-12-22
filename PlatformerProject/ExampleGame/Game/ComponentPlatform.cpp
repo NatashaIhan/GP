@@ -6,6 +6,7 @@
 void ComponentPlatform::Init(rapidjson::Value& serializedData) {
 	_size = serializedData["size"].GetFloat();
 	_type = static_cast<PlatformType>(serializedData["type"].GetInt());
+	_bouncy = serializedData["bouncy"].GetBool();
 
 	float halfSize = _size / 2;
 	float halfSizeBody = _tileSize / 2; //What is this? //tileSize is a float constant from header file
@@ -34,8 +35,11 @@ void ComponentPlatform::Init(rapidjson::Value& serializedData) {
 	// sprites
 	for (int i = -halfSize; i < halfSize; ++i) {
 		auto sprite = GetGameObject().lock()->CreateComponent<ComponentRendererSprite>().lock();
-		sprite->SetSprite("bunny-art", "ground_snow.png");
+		if (_bouncy)
+			sprite->SetSprite("bunny-art", "ground_snow_broken.png");
+		else
+			sprite->SetSprite("bunny-art", "ground_snow.png");
 		glm::vec2 pos = offset * _tileSize * (float)i;
 		sprite->SetSpritePosition(pos);
-	}
+    	}
 }

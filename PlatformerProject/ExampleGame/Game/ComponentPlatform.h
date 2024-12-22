@@ -12,8 +12,10 @@ class ComponentPlatform : public MyEngine::Component {
 
 public:
 	virtual void Init(rapidjson::Value& serializedData) override;
+	bool _bouncy;
 
 private:
 	float _size;
 	PlatformType _type;
+
 };

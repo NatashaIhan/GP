@@ -5,5 +5,4 @@ void ComponentPlatformBounce::Init(rapidjson::Value& serializedData) {
 	if (!gameObject)
 		return;
 
-	_bouncy = serializedData["bouncy"].GetBool();
 }

@@ -20,7 +20,8 @@
 						"typeId": "PLATFORM_BUILDER",
 						"serializedData": {
 							"size": 1,
-							"type": 0
+							"type": 0,
+							"bouncy": false
 						}
 					}
 				]
@@ -37,7 +38,8 @@
 						"typeId": "PLATFORM_BUILDER",
 						"serializedData": {
 							"size": 1,
-							"type": 0
+							"type": 0,
+							"bouncy": false
 						}
 					},
 					{
@@ -64,12 +66,7 @@
 						"typeId": "PLATFORM_BUILDER",
 						"serializedData": {
 							"size": 1,
-							"type": 0
-						}
-					},
-					{
-						"typeId": "PLATFORM_BOUNCER",
-						"serializedData": {
+							"type": 0,
 							"bouncy": true
 						}
 					}
@@ -135,6 +132,12 @@
 						"serializedData": {
 							"atlas": "bunny-art",
 							"sprite": "bunny1_ready.png"
+						}
+					},
+					{
+						"typeId": "PLATFORM_MANAGER",
+						"serializedData": {
+							"size": 1
 						}
 					},
 					{
