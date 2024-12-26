@@ -27,6 +27,7 @@ void ComponentCamera::Init(rapidjson::Value& serializedData) {
 }
 
 void ComponentCamera::Update(float delta) {
+	//Can be removed on hand-inh
 	if (_debugging)
 		if (auto gameObject = GetGameObject().lock()) {
 			glm::vec3 pos = gameObject->GetPosition();
@@ -44,6 +45,7 @@ void ComponentCamera::Update(float delta) {
 
 }
 
+//Badly implemented debugging tool. Remove on hand-in.
 void ComponentCamera::KeyEvent(SDL_Event& event) {
 	if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_F3)
 	{

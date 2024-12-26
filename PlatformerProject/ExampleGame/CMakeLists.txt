@@ -3,7 +3,7 @@
 file(GLOB_RECURSE MyGame-src "*.h" "*.cpp")
 
 
-add_executable(MyGame ${MyGame-src} "Game/PlatformManager.h" "Game/PlatformManager.cpp")
+add_executable(MyGame ${MyGame-src})
 
 target_include_directories(MyGame PUBLIC ${MYENGINE_INCLUDE_DIR})
 

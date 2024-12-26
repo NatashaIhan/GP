@@ -17,5 +17,4 @@ public:
 private:
 	float _size;
 	PlatformType _type;
-
 };

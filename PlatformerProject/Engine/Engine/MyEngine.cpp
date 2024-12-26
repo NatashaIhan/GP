@@ -12,6 +12,7 @@
 #include "rapidjson/writer.h"
 
 #include "Engine/Components/ComponentPhysicsBody.h"
+#include "Engine/Components/ComponentSoundSystem.h"
 
 namespace MyEngine {
 	Engine* Engine::_instance = nullptr;
@@ -53,7 +54,7 @@ namespace MyEngine {
 		rapidjson::IStreamWrapper isw(fis);
 		rapidjson::Document document;
 		document.ParseStream(isw);
-
+    
 		_gameObjects["root"] = std::make_shared<GameObject>();
 		_root = _gameObjects["root"];
 		if (auto root = _root.lock()) {
@@ -161,7 +162,6 @@ namespace MyEngine {
 	}
 
 	std::weak_ptr<GameObject> Engine::CreateGameObject(std::string name) {
-		printf("trying to create game object %s\n", name.c_str());
 		assert(_gameObjects.find(name) == _gameObjects.end() && "Cannot create two objects with same name");
 
 		auto ret = std::make_shared<GameObject>();

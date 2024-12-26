@@ -5,6 +5,7 @@
 void ComponentFollowTarget::Init(rapidjson::Value& serializedData) {
 	_targetId = serializedData["target"].GetString();
 	_offsetX = serializedData["offsetX"].GetFloat();
+	_offsetY = serializedData["offsetY"].GetFloat();
 	_lockX = serializedData["lockX"].GetBool();
 	_lockY = serializedData["lockY"].GetBool();
 
@@ -26,7 +27,7 @@ void ComponentFollowTarget::Update(float deltaTime) {
 	if (!_lockX)
 		pos.x = targetPos.x + _offsetX;
 	if (!_lockY)
-		pos.y = targetPos.y;
+		pos.y = targetPos.y + _offsetY;
 
 	gameObject->SetPosition(pos);
 }

@@ -95,6 +95,13 @@ void ComponentPhysicsBody::addForce(glm::vec2 force) {
 	_body->ApplyForce(forceV, _body->GetWorldCenter(), true);
 }
 
+void ComponentPhysicsBody::setPosition(glm::vec3 newPos) {
+	auto engine = MyEngine::Engine::GetInstance();
+	float physicsScale = engine->GetPhysicsScale();
+	b2Vec2 newPosVec(newPos[0] / physicsScale, newPos[1] / physicsScale);
+	_body->SetTransform(newPosVec, newPos[2]);
+}
+
 glm::vec2 ComponentPhysicsBody::getLinearVelocity() {
 	b2Vec2 v = _body->GetLinearVelocity();
 	return { v.x,v.y };

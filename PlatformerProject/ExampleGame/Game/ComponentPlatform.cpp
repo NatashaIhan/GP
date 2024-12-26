@@ -8,6 +8,7 @@ void ComponentPlatform::Init(rapidjson::Value& serializedData) {
 	_type = static_cast<PlatformType>(serializedData["type"].GetInt());
 	_bouncy = serializedData["bouncy"].GetBool();
 
+
 	float halfSize = _size / 2;
 	float halfSizeBody = _tileSize / 2; //What is this? //tileSize is a float constant from header file
 
@@ -24,10 +25,9 @@ void ComponentPlatform::Init(rapidjson::Value& serializedData) {
 	glm::vec3 objectScale = gameObject->GetScale();
 
 	// Apply scale to physics body size
-	glm::vec2 sizeBody = glm::vec2(380, 220);
+	glm::vec2 sizeBody = glm::vec2(380, 100);
 	sizeBody *= glm::vec2(objectScale.x, objectScale.y); // Apply GameObject's scale
 	sizeBody /= 2; // Box2D expects half-sizes
-
 
 	auto body = GetGameObject().lock()->CreateComponent<ComponentPhysicsBody>().lock();
 	body->CreateBody(b2_kinematicBody, false, sizeBody);
@@ -42,4 +42,4 @@ void ComponentPlatform::Init(rapidjson::Value& serializedData) {
 		glm::vec2 pos = offset * _tileSize * (float)i;
 		sprite->SetSpritePosition(pos);
     	}
-}
+	}

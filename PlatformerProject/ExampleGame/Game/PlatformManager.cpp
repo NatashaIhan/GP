@@ -48,8 +48,5 @@ void PlatformManager::Update(float deltaTime) {
 		ss << "}";
 		platformSpawnParameters.Parse(ss.str().c_str());
 		platformPtr->Init(platformSpawnParameters);
-
 	}
-
-
 }

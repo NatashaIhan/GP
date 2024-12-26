@@ -25,7 +25,7 @@ namespace MyEngine {
 	public:
 		static Engine* GetInstance() { return _instance; }
 	public:
-		const glm::vec2 WIN_SIZE = glm::vec2(800, 600);
+		const glm::vec2 WIN_SIZE = glm::vec2(800,1000);
 		const float PHYSICS_FIXED_FRAME_TIME = 1 / 60.0f;
 		const int   PHYSICS_ITERATION_POSITION = 2;
 		const int   PHYSICS_ITERATION_VELOCITY = 6;

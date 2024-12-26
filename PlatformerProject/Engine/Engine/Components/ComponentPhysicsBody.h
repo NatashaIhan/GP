@@ -6,6 +6,8 @@
 
 class ComponentPhysicsBody : public MyEngine::Component {
 	friend class MyEngine::Engine; // TODO get rid of this
+	friend class MyEngine::Engine;
+	friend class ComponentController;
 
 public:
 	~ComponentPhysicsBody();
@@ -18,6 +20,7 @@ public:
 	// Instantly affects velocity
 	void addImpulse(glm::vec2 impulse);
 	void setLinearVelocity(glm::vec2 velocity);
+	void setPosition(glm::vec3);
 	glm::vec2 getLinearVelocity();
 
 private:
