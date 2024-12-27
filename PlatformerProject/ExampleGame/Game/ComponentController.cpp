@@ -173,11 +173,6 @@ void ComponentController::OnCollisionStart(ComponentPhysicsBody* other, b2Manifo
 		engine->RegisterForDestruction(collidedGameObject);
 		_jetpack = true;
 	}
-	// Show the UI buttons
-	auto engine = MyEngine::Engine::GetInstance();
-
-	// Display game over information to the player
-	std::cout << "\nGame Over! Fell too far!" << std::endl;
 }
 
 void ComponentController::OnCollisionEnd(ComponentPhysicsBody* other, b2Manifold* manifold) {
@@ -186,7 +181,6 @@ void ComponentController::OnCollisionEnd(ComponentPhysicsBody* other, b2Manifold
 	}
 	if (manifold->localNormal.y > .99)
 		_grounded = false;
-
 	
 }
 
