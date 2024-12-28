@@ -22,8 +22,14 @@ void PlatformManager::Update(float deltaTime) {
 		if (!platformPtr) return;
 
 		glm::vec2 screenSize = MyEngine::Engine::GetInstance()->GetScreenSize();
-		int spawnPositionX = rand() % (int)screenSize.x - screenSize.x/2;
-		int spawnPositionY = _playerMaxHeight + (int)screenSize.y/2+100;
+		int platformWidth = 380;
+		int halfWidth = platformWidth / 2;
+
+		// Fix spawn position calculation
+		int minX = -183;  // Match the left boundary where player wraps
+		int maxX = 497;   // Match the right boundary where player wraps
+		int spawnPositionX = rand() % (maxX - minX + 1) + minX;
+		int spawnPositionY = _playerMaxHeight + (int)screenSize.y / 2 + 100;
 
 		bool isBouncy = rand() % 100 < 35;
 		rapidjson::Document platformSpawnParameters;
