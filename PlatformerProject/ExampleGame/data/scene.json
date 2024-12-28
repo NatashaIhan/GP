@@ -13,7 +13,7 @@
         "transform": {
           "position": [ 300, 140, 0 ],
           "rotation": [ 0, 0, 0 ],
-          "scale": [ 1, 1, 1 ]
+          "scale": [ 0.5, 0.5, 0.5 ]
         },
         "components": [
           {
@@ -38,9 +38,63 @@
         ]
       },
       {
-        "name": "Floor",
+        "name": "Floor0",
         "transform": {
-          "position": [ 100, 84, 0 ],
+          "position": [ -190, 84, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "components": [
+          {
+            "typeId": "PLATFORM_BUILDER",
+            "serializedData": {
+              "size": 1,
+              "type": 0,
+              "bouncy": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "Floor1",
+        "transform": {
+          "position": [ 0, 84, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "components": [
+          {
+            "typeId": "PLATFORM_BUILDER",
+            "serializedData": {
+              "size": 1,
+              "type": 0,
+              "bouncy": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "Floor2",
+        "transform": {
+          "position": [ 190, 84, 0 ],
+          "rotation": [ 0, 0, 0 ],
+          "scale": [ 0.5, 0.5, 0.5 ]
+        },
+        "components": [
+          {
+            "typeId": "PLATFORM_BUILDER",
+            "serializedData": {
+              "size": 1,
+              "type": 0,
+              "bouncy": false
+            }
+          }
+        ]
+      },
+      {
+        "name": "Floor3",
+        "transform": {
+          "position": [ 380, 84, 0 ],
           "rotation": [ 0, 0, 0 ],
           "scale": [ 0.5, 0.5, 0.5 ]
         },
@@ -58,7 +112,7 @@
       {
         "name": "Platform0",
         "transform": {
-          "position": [ 0, 252, 0 ],
+          "position": [ 300, 252, 0 ],
           "rotation": [ 0, 0, 0 ],
           "scale": [ 0.5, 0.5, 0.5 ]
         },
@@ -77,26 +131,8 @@
               "yoyo": true,
               "duration": 2.0,
               "start": [ 0, 0, 0 ],
-              "end": [ 0, -150, 0 ],
+              "end": [ 0, 150, 0 ],
               "easing": 2
-            }
-          }
-        ]
-      },
-      {
-        "name": "Platform2",
-        "transform": {
-          "position": [ 300, 252, 0 ],
-          "rotation": [ 0, 0, 0 ],
-          "scale": [ 0.5, 0.5, 0.5 ]
-        },
-        "components": [
-          {
-            "typeId": "PLATFORM_BUILDER",
-            "serializedData": {
-              "size": 1,
-              "type": 0,
-              "bouncy": true
             }
           }
         ]
@@ -191,8 +227,7 @@
               "channels": 2
             }
           }
-        ],
-        "children": []
+        ]
       },
       {
         "name": "camera",
@@ -219,8 +254,7 @@
               "lockY": false
             }
           }
-        ],
-        "children": []
+        ]
       }
     ]
   }
