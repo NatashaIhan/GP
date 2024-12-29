@@ -12,6 +12,7 @@
 #include "ComponentJetpack.h"
 #include "ComponentSound.h"
 #include "Engine/Components/ComponentRendererSprite.h"
+#include "PlatformManager.h"
 
 
 
@@ -192,6 +193,12 @@ void ComponentController::Reset() {
 	// Get the game object this controller is attached to
 	auto gameObject = GetGameObject().lock();
 	if (!gameObject) return;
+
+	// Clean up all platforms first
+	auto platformManager = GetGameObject().lock()->FindComponent<PlatformManager>().lock();
+	if (platformManager) {
+		platformManager->CleanupPlatforms();
+	}
 
 	// Reset position to starting point
 	glm::vec3 startPos(100, 300, 0);
