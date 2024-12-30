@@ -31,6 +31,7 @@ namespace MyEngine {
 		const int   PHYSICS_ITERATION_VELOCITY = 6;
 		const float PHYSICS_SCALE = 100;
 		std::vector<GameObject*> destructionQueue = {};
+		std::vector<GameObject*> objectHolder = {};
 
 		Engine();
 
@@ -39,6 +40,7 @@ namespace MyEngine {
 		void Update(float);
 		void UpdatePhysics();
 		void Render();
+		void Reset();
 
 		float GetFPS() const { return 1.0 / time_elapsed.count(); }
 		float GetTimeElapsedMs() const { return 1000 * time_elapsed.count(); }
@@ -52,6 +54,7 @@ namespace MyEngine {
 		b2World* GetB2World() { return _b2World; }
 		float GetPhysicsScale() { return PHYSICS_SCALE; }
 
+
 		void RegisterPhysicsComponent(ComponentPhysicsBody* body);
 		void DeregisterPhysicsComponent(ComponentPhysicsBody* body);
 		void RegisterForDestruction(GameObject* gameObject);
@@ -61,6 +64,7 @@ namespace MyEngine {
 		std::weak_ptr<GameObject> GetGameObject(std::string name) { return _gameObjects[name]; }
 		void DestroyGameObject(GameObject* gameObject);
 		void DestroyQueuedBodies();
+		void RegisterObject(GameObject* gameObject);
 
 	private:
 		// scene graph

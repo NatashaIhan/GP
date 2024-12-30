@@ -5,9 +5,7 @@
 #include <Box2D/Box2D.h>
 
 class ComponentPhysicsBody : public MyEngine::Component {
-	friend class MyEngine::Engine; // TODO get rid of this
-	friend class MyEngine::Engine;
-	friend class ComponentController;
+	friend class MyEngine::Engine; 
 
 public:
 	~ComponentPhysicsBody();
@@ -22,13 +20,12 @@ public:
 	void setLinearVelocity(glm::vec2 velocity);
 	void setPosition(glm::vec3);
 	glm::vec2 getLinearVelocity();
+	b2Fixture* _fixture = nullptr;
 
 private:
 	b2World* _world;
 	b2Body* _body = nullptr;
-	b2Fixture* _fixture = nullptr;
 	b2PolygonShape* _shape = nullptr;
 
-	// TODO move to deserialization library (as DeserializeVector2)
 	static glm::vec2 DeserializeVector2(rapidjson::Value& vectorData);
 };

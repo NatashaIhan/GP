@@ -13,14 +13,6 @@ void ComponentRendererSprite::Init(rapidjson::Value& serializedData) {
 
 void ComponentRendererSprite::SetSprite(std::string idAtlas, std::string idSprite)
 {
-	if (idAtlas == "SINGLE") {
-		auto tex = sre::Texture::create().withFile("data/" + idSprite + ".png")
-			.withFilterSampling(false)
-			.build();
-
-		auto atlas = sre::SpriteAtlas::createSingleSprite(tex, idSprite, glm::vec2(0, 0));
-		MyEngine::ResourceManager::RegisterAtlas(idAtlas, atlas);
-	}
 	_atlas = MyEngine::ResourceManager::GetAtlas(idAtlas);
 	_sprite = _atlas->get(idSprite);
 }
@@ -30,7 +22,6 @@ void ComponentRendererSprite::Render(sre::RenderPass& renderPass) {
 	if (!gameObject)
 		return;
 
-	// TODO cache builder at engine level and call draw() one time at the end of render calls
 	auto builder = sre::SpriteBatch::create();
 	builder.addSprite(_sprite);
 	auto batch = builder.build();

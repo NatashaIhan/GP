@@ -2,19 +2,12 @@
 
 #include "Engine/Component.h"
 
-enum PlatformType {
-	Platform,
-	Wall
-};
 
 class ComponentPlatform : public MyEngine::Component {
-	static constexpr float _tileSize = 380;
+private:
+	glm::vec2 _platformSize = glm::vec2(380, 100);
 
 public:
 	virtual void Init(rapidjson::Value& serializedData) override;
-	bool _bouncy;
-
-private:
-	float _size;
-	PlatformType _type;
+	bool porous;
 };

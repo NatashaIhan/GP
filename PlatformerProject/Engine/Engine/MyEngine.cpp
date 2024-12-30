@@ -20,9 +20,6 @@ namespace MyEngine {
 	Engine::Engine() : _b2DebugDraw(PHYSICS_SCALE) {
 		assert(_instance == nullptr && " Only one instance of MyEngine::Engine allowed!");
 		_instance = this;
-
-		/*_gameObjects["root"] = std::make_shared<GameObject>();
-		_root = _gameObjects["root"];*/
 	}
 
 	glm::vec2 Engine::GetScreenSize() const
@@ -120,9 +117,6 @@ namespace MyEngine {
 				gameObject->SetEulerAngles(glm::vec3(0, 0, angle));
 			}
 		}
-
-		//DestroyQueuedBodies();
-
 	}
 
 	void Engine::Render()
@@ -155,13 +149,19 @@ namespace MyEngine {
 	}
 
 	void Engine::DeregisterPhysicsComponent(ComponentPhysicsBody* body) {
+		if (!body) {
+			return;
+		}
+		//std::string name = body->GetGameObject().lock()->GetName();
 		_b2World->DestroyBody(body->_body);
+		//std::cout << name << std::endl;
 		auto iter = _physicsLookup.find(body->_fixture);
 		if (iter != _physicsLookup.end())
 			_physicsLookup.erase(iter);
 	}
 
 	std::weak_ptr<GameObject> Engine::CreateGameObject(std::string name) {
+		//std::cout << "Created this GO: " << name << std::endl;
 		assert(_gameObjects.find(name) == _gameObjects.end() && "Cannot create two objects with same name");
 
 		auto ret = std::make_shared<GameObject>();
@@ -237,8 +237,17 @@ namespace MyEngine {
 			{
 				gameObjA->OnCollisionEnd(physB->second, manifold);
 				gameObjB->OnCollisionEnd(physA->second, manifold);
-				//destructionQueue.push_back(gameObjB.get());
 			}
+		}
+	}
+
+	void Engine::RegisterObject(GameObject* gameObject) {
+		objectHolder.push_back(gameObject);
+	}
+
+	void Engine::Reset() {
+		for (auto* body : objectHolder) {
+			RegisterForDestruction(body);
 		}
 	}
 
@@ -251,6 +260,7 @@ namespace MyEngine {
 			if (body == nullptr) {
 				continue;
 			}
+			objectHolder.erase(std::remove(objectHolder.begin(), objectHolder.end(), body),objectHolder.end());
 			auto cpb = body->FindComponent<ComponentPhysicsBody>().lock().get();
 			DeregisterPhysicsComponent(cpb);
 			DestroyGameObject(body);

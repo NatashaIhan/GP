@@ -48,11 +48,6 @@ void ComponentPhysicsBody::CreateBody(b2BodyType bodyType, bool isSensor, glm::v
 	// body
 	{
 		b2BodyDef bodyDef;
-		// in json, `b2BodyType` will be represented with the int equivalend, such as
-		//   b2_staticBody    = 0
-		//   b2_kinematicBody = 1
-		//   b2_dynamicBody   = 2
-		// see box2D documentation for more info on each type
 		bodyDef.type = bodyType;
 		bodyDef.position = b2Vec2(pos.x / physicsScale, pos.y / physicsScale);
 		bodyDef.fixedRotation = true;
@@ -73,7 +68,7 @@ void ComponentPhysicsBody::CreateBody(b2BodyType bodyType, bool isSensor, glm::v
 	engine->RegisterPhysicsComponent(this);
 }
 
-// TODO move to deserialization library 
+
 glm::vec2 ComponentPhysicsBody::DeserializeVector2(rapidjson::Value& vectorData) {
 	assert(vectorData.IsArray() && "Trying to deserialize a vector from non-vector json value");
 	assert(vectorData.Size() == 2 && "Trying to deserialize a vector from vector json value that doesn't have 2 elements");

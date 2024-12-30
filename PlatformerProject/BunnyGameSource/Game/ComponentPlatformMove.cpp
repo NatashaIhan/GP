@@ -35,14 +35,14 @@ void ComponentPlatformMove::Update(float delta) {
 
 	float v = Easing(t);
 
-	glm::vec3 pos = _str * (1 - v) + _end * v; //+ glm::vec3(100 * t, 1 * _t, 0)
+	glm::vec3 pos = _str * (1 - v) + _end * v;
 
 
 	glm::vec2 d = pos - gameObject->GetPosition();
 
 	auto a = d * (1 / MyEngine::Engine::GetInstance()->PHYSICS_SCALE);
 	_body.lock()->setLinearVelocity(d);
-	//gameObject->SetPosition(pos);
+
 }
 
 float ComponentPlatformMove::Easing(float t) {
@@ -50,6 +50,6 @@ float ComponentPlatformMove::Easing(float t) {
 		case Constant: return 0;
 		case Linear: return t;
 		case Sin: return glm::sin(t);
-		// TODO add your easing functions here
+
 	}
 }

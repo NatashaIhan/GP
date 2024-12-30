@@ -9,7 +9,7 @@
 #include "Component.h"
 #include "ComponentFactory.h"
 #include "Logger.h"
-#include "ExtraMath.h"
+#include "QuaternionsSafe.h"
 
 namespace MyEngine {
 	// public API
@@ -102,7 +102,6 @@ namespace MyEngine {
 			glm::scale(scl);
 	}
 
-	// TODO move to deserialization library (as DeserializeVector3)
 	glm::vec3 GameObject::DeserializeVector(rapidjson::Value& vectorData) {
 		assert(vectorData.IsArray() && "Trying to deserialize a vector from non-vector json value");
 		assert(vectorData.Size() == 3 && "Trying to deserialize a vector from vector json value that doesn't have 3 elements (only 3d vectors supported ATM)");
@@ -138,7 +137,6 @@ namespace MyEngine {
 		};
 	}
 
-	//doesn't update in the physics sim, only the sprite
 	void GameObject::SetPosition(glm::vec3 position) {
 		transform[3][0] = position[0];
 		transform[3][1] = position[1];
@@ -163,7 +161,6 @@ namespace MyEngine {
 		currScale[2] = 1 / currScale[2];
 
 		// we first undo the current scale, then apply the new one
-		// (not pretty, but gets the job done)
 		transform = glm::scale(scale) * glm::scale(currScale) * transform;
 	}
 
